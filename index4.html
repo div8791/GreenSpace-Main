@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Welcome to Plant</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Ubuntu:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="fav.png" type="image/x-icon" />
+    <!-- Other favicon formats -->
+    <link rel="icon" href="/public/images/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/public/images/apple-touch-icon.png" />
+    <style>
+      body {
+        font-family: 'Montserrat', sans-serif;
+        background-color: #f8f9fa;
+        margin: 0;
+        padding: 0;
+      }
+
+      .upper-part {
+        background: url('/public/images/plant-pic.jpg') no-repeat center center;
+        background-size: cover;
+        padding: 60px 20px;
+        text-align: center;
+        color: #fff;
+      }
+
+      .inner-plant {
+        background-color: rgba(0, 0, 0, 0.7); /* Adjust alpha value for darkness */
+        padding: 20px;
+        border-radius: 15px;
+        display: inline-block;
+        margin-bottom: 20px;
+      }
+
+      .inner-text h5 {
+        margin: 20px 0;
+      }
+
+      input[type="text"], input[type="tel"] {
+        width: 80%;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+
+      .btn1 {
+        background-color: #04AA6D;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 18px;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+      }
+
+      .btn1:hover {
+        background-color: #038d58;
+        transform: translateY(-2px);
+      }
+
+      .social a {
+        color: #fff;
+        margin: 0 10px;
+        font-size: 24px;
+        transition: color 0.3s ease, transform 0.3s ease;
+      }
+
+      .social a:hover {
+        color: #04AA6D;
+        transform: translateY(-2px);
+      }
+
+      .last-part {
+        text-align: center;
+        padding: 40px 20px;
+        background-color: #fff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .last-part h3 {
+        color: #333;
+        margin-bottom: 20px;
+      }
+
+      .last-part h2 {
+        color: #04AA6D;
+        font-family: 'Ubuntu', sans-serif;
+        font-weight: 700;
+      }
+
+      .error-message {
+        color: red;
+        margin-top: 10px;
+      }
+
+      .success-message {
+        color: green;
+        margin-top: 10px;
+      }
+
+      /* Modal styles */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 600px;
+        text-align: center;
+        border-radius: 10px;
+      }
+
+      .celebration {
+        font-size: 24px;
+        color: #04AA6D;
+        font-weight: bold;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="upper-part">
+      <div class="plant col-xs-12">
+        <div class="inner-plant">
+          <div class="inner-text">
+            <h5>Hi! Users Welcome to GreenSpace Planting section.</h5>
+            <h5>
+              Let's plant a tree in your name and make space for more Green and less Grey..
+            </h5>
+            <label for="gtin">Enter GTIN number</label>
+            <input type="text" id="gtin" placeholder="Enter GTIN number" />
+            <label for="name">Enter Your Name</label>
+            <input type="text" id="name" placeholder="Enter Your Name" />
+            <label for="phone">Enter Your Phone Number</label>
+            <input type="tel" id="phone" placeholder="Enter Your Phone Number" />
+            <div id="message"></div>
+          </div>
+          <button type="button" class="btn btn1">PLANT</button>
+          <div class="social">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram-square"></i></a>
+            <a href="#"><i class="fas fa-envelope"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="last-part">
+      <h3>Proudly Working to <b>Make a Change</b></h3>
+      <h2>GreenSpace</h2>
+    </div>
+
+    <!-- Modal for celebration -->
+    <div id="celebrationModal" class="modal">
+      <div class="modal-content">
+        <p id="celebrationText" class="celebration"></p>
+      </div>
+    </div>
+
+  </body>
+  <script>
+    document.querySelector('.btn1').addEventListener('click', function (e) {
+      var gtin = document.getElementById('gtin').value;
+      var name = document.getElementById('name').value;
+      var phone = document.getElementById('phone').value;
+      var messageDiv = document.getElementById('message');
+      var modal = document.getElementById('celebrationModal');
+      var celebrationText = document.getElementById('celebrationText');
+      messageDiv.innerHTML = ''; // Clear previous messages
+
+      // Validate GTIN number
+      var gtinValid = /^[0-9]{8}$|^[0-9]{12}$|^[0-9]{13}$|^[0-9]{14}$/.test(gtin);
+      if (!gtinValid) {
+        messageDiv.innerHTML += '<p class="error-message">Please enter a correct GTIN number.</p>';
+        return;
+      }
+
+      // Validate name
+      var nameValid = /^[a-zA-Z\s]+$/.test(name);
+      if (!nameValid) {
+        messageDiv.innerHTML += '<p class="error-message">Please enter a correct name.</p>';
+        return;
+      }
+
+      // Validate phone number
+      var phoneValid = /^[0-9]{10}$/.test(phone);
+      if (!phoneValid) {
+        messageDiv.innerHTML += '<p class="error-message">Please enter a correct phone number.</p>';
+        return;
+      }
+
+      if (gtinValid && nameValid && phoneValid) {
+        celebrationText.innerText = `Hi, ${name}! A tree will be planted soon and you will receive 100 points.`;
+        modal.style.display = "block";
+        setTimeout(function() {
+          modal.style.display = "none";
+          window.location.href = 'index.html';
+        }, 5000);
+      } else {
+        messageDiv.innerHTML += '<p class="error-message">Please fill out all fields.</p>';
+      }
+    });
+  </script>
+</html>
